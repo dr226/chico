@@ -81,7 +81,7 @@ def player_turn(board, turn_count, matadora_placed):
         # If the player chooses to move a piece or it's not yet time to place a Matadora
         command = input("Enter your move (e.g., '3 4 to 3 5'): ").lower()
         try:
-            command = "3 4 to 4 5"
+            # command = "3 4 to 4 5"
             parts = command.split()
             start, to, end = ' '.join(parts[:2]), parts[2], ' '.join(parts[3:])
 
@@ -313,19 +313,35 @@ def main():
             print(f"Game over. {victory_status.capitalize()} has won.")
             break
 
-        computer_turn(board)
-        # Update the board for captures after the computer's turn
-        update_board_for_captures(board)
 
-        # Check if the game has ended after computer's turn
-        victory_status = check_victory(board)
-        if victory_status:
-            print(f"Game over. {victory_status.capitalize()} has won.")
-            break
+def computer_turn(board, computer_pieces):
+    # Randomly select a piece from computer_pieces
+    selected_piece = random.choice(computer_pieces)
 
-        turn_count += 1
+    # Indicate all possible moves for this piece
+    # For this step, you would have to implement the method "get_possible_moves" in your piece classes
+    possible_moves = selected_piece.get_possible_moves(board)
 
-    print("Game over.")
+    # If there are no possible moves, then return from the function
+    if not possible_moves:
+        return
+
+    # Randomly select a move from possible_moves
+    selected_move = random.choice(possible_moves)
+
+    # Apply the selected move
+    # This would involve implementing a method "apply_move"
+    # in board class that takes a piece and a move, and applies the move for that piece.
+    board.apply_move(selected_piece, selected_move)(board, computer_pieces)
+
+    # Update the board for captures after the computer's turn
+    update_board_for_captures(board)
+
+    # Check if the game has ended after computer's turn
+    victory_status = check_victory(board)
+    if victory_status:
+        print(f"Game over. {victory_status.capitalize()} has won.")
+        exit()
 
 
 # Execute the game if this file is the main script
